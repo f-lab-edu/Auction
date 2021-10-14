@@ -1,37 +1,35 @@
 package Auction.service.domain;
 
 import com.sun.istack.NotNull;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 public class Member {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String userId;
-    @NotNull
-    private String userPassword;
+    @Column(name = "member_id")
+    private String memberId;
 
-    public Member(String userId, String userPassword){
-        this.userId = userId;
-        this.userPassword = userPassword;
-    }
+    @NotNull
+    @Column(name = "password")
+    private String memberPassword;
 
     @Setter
-    private String userName;
+    private String name;
+
     @Setter
     private String address;
+
     @Setter
     private String phone;
+
 }

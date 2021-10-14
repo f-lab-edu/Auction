@@ -19,13 +19,12 @@ import java.util.ArrayList;
 public class LoginService  implements UserDetailsService {
 
     private final MemberRepository memberRepository;
-    private PasswordEncoder bcryptEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Member member = memberRepository.findByUserId(userId);
+        Member member = memberRepository.findByMemberId(userId);
         if(member != null){
-            return new User(member.getUserId(), member.getUserPassword(), new ArrayList<>());
+            return new User(member.getMemberId(), member.getMemberPassword(), new ArrayList<>());
         }
         log.info("member is null");
         return null;

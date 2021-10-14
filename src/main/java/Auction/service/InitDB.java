@@ -26,8 +26,11 @@ public class InitDB {
         private final EntityManager em;
 
         public void dbInit() {
-
-            Member member = new Member("test", "test1234");
+            Member member = Member.builder()
+                            .memberId("test")
+                            // "test1234" 암호화 값
+                            .memberPassword("$2a$10$BinW.Y75dieUuYHkNdeGROUpgykN/za7wbGbU6sN9RjrnFhv0aXGC")
+                            .build();
             em.persist(member);
         }
     }
