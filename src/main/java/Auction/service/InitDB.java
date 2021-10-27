@@ -27,9 +27,9 @@ public class InitDB {
 
         public void dbInit() {
             Member member = Member.builder()
-                            .memberId("test")
+                            .phone("01000000000")
                             // "test1234" 암호화 값
-                            .memberPassword("$2a$10$BinW.Y75dieUuYHkNdeGROUpgykN/za7wbGbU6sN9RjrnFhv0aXGC")
+                            .password("$2a$10$BinW.Y75dieUuYHkNdeGROUpgykN/za7wbGbU6sN9RjrnFhv0aXGC")
                             .build();
             em.persist(member);
         }

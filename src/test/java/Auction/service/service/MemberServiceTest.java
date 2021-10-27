@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -26,22 +26,22 @@ class MemberServiceTest {
     @Test
     @DisplayName("회원가입 성공")
     void registerMember(){
-        MemberDto memberDto = new MemberDto("ttttt", "pass", "ss", "0100000000");
+        MemberDto memberDto = new MemberDto("0100000000", "pass", "ss");
 
         memberService.registerMember(memberDto);
 
-        Member findMember = memberRepository.findByMemberId(memberDto.getId());
-        assertThat(findMember.getMemberId()).isEqualTo(memberDto.getId());
+        Member findMember = memberRepository.findByPhone(memberDto.getPhone());
+        assertThat(findMember.getPhone()).isEqualTo(memberDto.getPhone());
     }
 
     @Test
-    @DisplayName("id 중복 검사")
-    void checkMemberByMemberId() {
-        MemberDto memberDto1 = new MemberDto("test", "test1234", "name", "0100000000");
+    @DisplayName("휴대폰 번호 중복 검사")
+    void checkMemberByPhone() {
+        MemberDto memberDto1 = new MemberDto("01099999999", "test1234", "name");
         memberService.registerMember(memberDto1);
 
-        assertTrue(memberService.checkMemberByMemberId("test"));
-        assertFalse(memberService.checkMemberByMemberId("test2"));
+        assertTrue(memberService.checkMemberByPhone("01099999999"));
+        assertFalse(memberService.checkMemberByPhone("test2"));
     }
 
 }

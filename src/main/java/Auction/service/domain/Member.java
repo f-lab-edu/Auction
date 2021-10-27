@@ -13,23 +13,22 @@ import javax.persistence.*;
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long id;
 
     @NotNull
-    @Column(name = "member_id")
-    private String memberId;
+    private String phone;
 
     @NotNull
-    @Column(name = "password")
-    private String memberPassword;
+    private String password;
+
+    @Setter
+    private String nickname;
 
     @Setter
     private String name;
 
     @Setter
     private String address;
-
-    @Setter
-    private String phone;
 
 }
