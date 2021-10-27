@@ -1,6 +1,7 @@
 package Auction.service.service;
 
 import Auction.service.domain.Member;
+import Auction.service.exception.CustomException;
 import Auction.service.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,10 +9,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+
+import static Auction.service.utils.ResultCode.INVALID_PARAMS;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +23,12 @@ public class LoginService  implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Member member = memberRepository.findByMemberId(userId);
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
+        Member member = memberRepository.findByPhone(phone);
+
         if(member != null){
-            return new User(member.getMemberId(), member.getMemberPassword(), new ArrayList<>());
+            return new User(member.getPhone(), member.getPassword(), new ArrayList<>());
         }
-        log.info("member is null");
-        return null;
+        throw new CustomException(INVALID_PARAMS);
     }
 }
