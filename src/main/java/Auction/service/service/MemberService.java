@@ -19,8 +19,9 @@ public class MemberService {
         return memberRepository.save(member).getId();
     }
 
-    public Boolean checkMemberByMemberId(String memberId) {
-        return memberRepository.existsByMemberId(memberId);
+    public Boolean checkMemberByPhone(String phone) {
+        return memberRepository.existsByPhone(phone);
     }
+
 }
 
