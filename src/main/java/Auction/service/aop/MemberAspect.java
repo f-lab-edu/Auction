@@ -4,6 +4,7 @@ import Auction.service.dto.LoginDto;
 import Auction.service.dto.MemberDto;
 import Auction.service.dto.Result;
 import Auction.service.exception.CustomException;
+import Auction.service.exception.CustomMessageException;
 import Auction.service.service.LoginService;
 import Auction.service.service.MemberService;
 import Auction.service.utils.JwtUtility;
@@ -20,9 +21,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
 import static Auction.service.utils.ResultCode.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
 @RequiredArgsConstructor
@@ -54,18 +55,10 @@ public class MemberAspect {
         if(memberService.checkMemberByPhone(memberDto.getPhone())) {
             throw new CustomException(DUPLICATE_RESOURCE);
         }
-
         // 회원가입 유효성 검사
         if (bindingResult.hasErrors()) {
-            String field = ((FieldError) bindingResult.getAllErrors().get(0)).getField();
-
-            if(field.equals("phone")) {
-                throw new CustomException(INVALID_PHONE);
-            } else if (field.equals("password")) {
-                throw new CustomException(INVALID_PASSWORD);
-            } else if (field.equals("nickname")) {
-                throw new CustomException(INVALID_NICKNAME);
-            }
+            String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            throw new CustomMessageException(BAD_REQUEST, message);
         }
     }
 

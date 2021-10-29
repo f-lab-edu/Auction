@@ -3,6 +3,7 @@ package Auction.service.exception;
 import Auction.service.dto.Result;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException.Forbidden;
@@ -14,11 +15,19 @@ import static Auction.service.utils.ResultCode.*;
 public class ControllerExceptionHandler {
 
     /**
-     * 커스텀 런타임 에러
+     * 커스텀 런타임 에러 : ResultCode enum class 이용
      */
     @ExceptionHandler(CustomException.class)
-    private ResponseEntity<Result> customerException(CustomException e) {
+    private ResponseEntity<Result> customException(CustomException e) {
         return Result.toResponseEntity(e.getResultCode());
+    }
+
+    /**
+     * 커스텀 런타임 에러 : httpStatus, message 직접 입력
+     */
+    @ExceptionHandler(CustomMessageException.class)
+    private ResponseEntity<Result> customMessageException(CustomMessageException e) {
+        return Result.toResponseEntity(e.getHttpStatus(), e.getMessage());
     }
 
     /**
