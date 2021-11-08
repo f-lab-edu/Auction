@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:tc:mariadb:///testdb?serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
