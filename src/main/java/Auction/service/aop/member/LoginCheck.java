@@ -1,4 +1,4 @@
-package Auction.service.aop;
+package Auction.service.aop.member;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

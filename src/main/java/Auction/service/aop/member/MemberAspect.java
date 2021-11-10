@@ -1,4 +1,4 @@
-package Auction.service.aop;
+package Auction.service.aop.member;
 
 import Auction.service.dto.LoginDto;
 import Auction.service.dto.MemberDto;
@@ -35,7 +35,7 @@ public class MemberAspect {
     private final JwtUtility jwtUtility;
     private final AuthenticationManager authenticationManager;
 
-    @Before("@annotation(Auction.service.aop.PhoneCheck)")
+    @Before("@annotation(Auction.service.aop.member.PhoneCheck)")
     private void memberPhoneCheck(JoinPoint joinPoint) {
         String phone = (String) joinPoint.getArgs()[0];
 
@@ -45,7 +45,7 @@ public class MemberAspect {
         }
     }
 
-    @Before("@annotation(Auction.service.aop.JoinCheck)")
+    @Before("@annotation(Auction.service.aop.member.JoinCheck)")
     private void joinCheck(JoinPoint joinpoint) {
 
         MemberDto memberDto = (MemberDto) joinpoint.getArgs()[0];
@@ -63,7 +63,7 @@ public class MemberAspect {
     }
 
 
-    @Around("@annotation(Auction.service.aop.LoginCheck))")
+    @Around("@annotation(Auction.service.aop.member.LoginCheck))")
     private ResponseEntity<Result> LoginCheck(ProceedingJoinPoint pjp) throws Throwable {
 
         LoginDto loginDto = (LoginDto) pjp.getArgs()[0];
