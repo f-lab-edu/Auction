@@ -19,6 +19,10 @@ public enum ResultCode {
     INVALID_NICKNAME(BAD_REQUEST,"닉네임을 입력해주세요."),
     INVALID_PARAMS(BAD_REQUEST, "잘못된 정보입니다."),
     INVALID_TOKEN(BAD_REQUEST, "토큰이 유효하지 않습니다"),
+    INVALID_TIME(BAD_REQUEST, "경매 마감 시간은 현재 시간보다 이후여야 합니다"),
+    INVALID_CATEGORY(BAD_REQUEST, "잘못된 카테고리 입니다"),
+    INVALID_SALETYPE(BAD_REQUEST, "잘못된 판매방법 입니다"),
+    INVALID_MEMBER(BAD_REQUEST, "잘못된 사용자 입니다"),
 
     // 401 UNAUTHORIZED : 인증되지 않은 사용자
     INVALID_AUTH_TOKEN(UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),
