@@ -1,5 +1,7 @@
-package Auction.service.domain;
+package Auction.service.domain.member;
 
+import Auction.service.domain.BaseTime;
+import Auction.service.domain.member.Address;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -10,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -22,13 +24,19 @@ public class Member {
     @NotNull
     private String password;
 
-    @Setter
     private String nickname;
 
-    @Setter
     private String name;
 
-    @Setter
-    private String address;
+    @Embedded
+    private Address address;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
 }
