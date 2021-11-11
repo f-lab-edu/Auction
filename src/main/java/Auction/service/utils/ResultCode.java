@@ -23,6 +23,7 @@ public enum ResultCode {
     INVALID_CATEGORY(BAD_REQUEST, "잘못된 카테고리 입니다"),
     INVALID_SALETYPE(BAD_REQUEST, "잘못된 판매방법 입니다"),
     INVALID_MEMBER(BAD_REQUEST, "잘못된 사용자 입니다"),
+    MAX_FILE_SIZE(BAD_REQUEST, "파일 용량이 최대치를 초과했습니다"),
 
     // 401 UNAUTHORIZED : 인증되지 않은 사용자
     INVALID_AUTH_TOKEN(UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),
