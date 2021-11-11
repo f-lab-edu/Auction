@@ -1,6 +1,6 @@
 package Auction.service.service;
 
-import Auction.service.domain.Member;
+import Auction.service.domain.member.Member;
 import Auction.service.dto.MemberDto;
 import Auction.service.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;

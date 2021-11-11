@@ -1,8 +1,8 @@
 package Auction.service.controller;
 
-import Auction.service.aop.JoinCheck;
-import Auction.service.aop.PhoneCheck;
-import Auction.service.aop.LoginCheck;
+import Auction.service.aop.member.JoinCheck;
+import Auction.service.aop.member.PhoneCheck;
+import Auction.service.aop.member.LoginCheck;
 import Auction.service.dto.LoginDto;
 import Auction.service.dto.MemberDto;
 import Auction.service.dto.Result;
@@ -32,7 +32,7 @@ public class MemberController {
     }
 
     @JoinCheck
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity register(@RequestBody @Valid MemberDto memberDto, BindingResult bindingResult) {
         Long id = memberService.registerMember(memberDto);
         return Result.toResponseEntity(SUCCESS, id);

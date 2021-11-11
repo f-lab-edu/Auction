@@ -1,0 +1,1 @@
+ alter table member add (city varchar(255) default null, street varchar(255) default null, zipcode varchar(255) default null)

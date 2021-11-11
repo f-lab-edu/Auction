@@ -1,6 +1,6 @@
 package Auction.service.dto;
 
-import Auction.service.domain.Member;
+import Auction.service.domain.member.Member;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

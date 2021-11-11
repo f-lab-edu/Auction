@@ -1,4 +1,4 @@
-package Auction.service.aop;
+package Auction.service.aop.product;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.CLASS)
-public @interface JoinCheck {
+public @interface ProductCheck {
 }

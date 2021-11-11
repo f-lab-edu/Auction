@@ -1,4 +1,9 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 100MB
+
   datasource:
     url: jdbc:mariadb://localhost:3306/testdb?serverTimezone=UTC&characterEncoding=UTF-8
     username: test
@@ -16,7 +21,17 @@ spring:
         format_sql: true
 
     database-platform: org.hibernate.dialect.MariaDBDialect
+    generate-ddl: false
 
   flyway:
     baseline-on-migrate: true # flyway_schema_history 테이블을 자동으로 생성할지 여부
     baseline-version: 0 # 최초 버전 정보
+
+# JPA 쿼리 파라미터 확인
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace

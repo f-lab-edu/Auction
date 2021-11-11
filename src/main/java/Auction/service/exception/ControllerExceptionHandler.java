@@ -3,13 +3,14 @@ package Auction.service.exception;
 import Auction.service.dto.Result;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException.Forbidden;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import static Auction.service.utils.ResultCode.*;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -54,12 +55,20 @@ public class ControllerExceptionHandler {
         return Result.toResponseEntity(INVALID_METHOD);
     }
 
+  /**
+   * 파일 용량 제한 초과
+   */
+  @ExceptionHandler(MaxUploadSizeExceededException.class)
+    private ResponseEntity<Result> maxUploadSizeException() {
+      return Result.toResponseEntity(MAX_FILE_SIZE);
+    }
+
     /**
      * 그 외 에러
      */
     @ExceptionHandler(Exception.class)
-    private ResponseEntity<Result> Exception() {
-        return Result.toResponseEntity(SERVER_ERROR);
+    private ResponseEntity<Result> Exception(Exception e) {
+        return Result.toResponseEntity(INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
 }
