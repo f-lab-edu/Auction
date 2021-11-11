@@ -1,4 +1,9 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 100MB
+
   datasource:
     url: jdbc:mariadb://localhost:3306/testdb?serverTimezone=UTC&characterEncoding=UTF-8
     username: test
