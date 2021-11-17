@@ -2,6 +2,7 @@ package Auction.service.domain.product;
 
 import Auction.service.domain.BaseTime;
 import Auction.service.domain.member.Member;
+import Auction.service.dto.ProductDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,11 +18,11 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product extends BaseTime {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long id;
 
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -32,7 +33,11 @@ public class Product extends BaseTime {
     @NotNull
     private String description;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(
+            mappedBy = "product",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<ProductImg> images = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -51,11 +56,40 @@ public class Product extends BaseTime {
     private Integer fixPrice; //즉시 구매가
     private Integer nowPrice; // 현재가
 
-    public void setImages(List<ProductImg> images) {
-        this.images = images;
+    public void addImage(ProductImg productImg) {
+        this.images.add(productImg);
     }
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public void update(ProductDto productDto) {
+
+        this.name = productDto.getName();
+        this.description = productDto.getDescription();
+        this.saleType = SaleType.valueOf(productDto.getSaleType());
+
+        if (this.saleType.equals(SaleType.FIX)) {
+            this.deadline = null;
+            this.nowPrice = null;
+            this.startPrice = null;
+            this.fixPrice = productDto.getFixPrice();
+        } else if (this.saleType.equals(SaleType.FIX_AND_BIDDING)) {
+            this.deadline = productDto.getDeadline();
+            this.nowPrice = productDto.getStartPrice();
+            this.startPrice = productDto.getStartPrice();
+            this.fixPrice = productDto.getFixPrice();
+        } else if (this.saleType.equals(SaleType.BIDDING)) {
+            this.deadline = productDto.getDeadline();
+            this.nowPrice = productDto.getStartPrice();
+            this.startPrice = productDto.getStartPrice();
+            this.fixPrice = null;
+        }
+
     }
 }
