@@ -23,6 +23,10 @@ public enum ResultCode {
     INVALID_CATEGORY(BAD_REQUEST, "잘못된 카테고리 입니다"),
     INVALID_SALETYPE(BAD_REQUEST, "잘못된 판매방법 입니다"),
     INVALID_MEMBER(BAD_REQUEST, "잘못된 사용자 입니다"),
+    INVALID_PRODUCT(BAD_REQUEST, "잘못된 상품 정보 입니다"),
+    INVALID_PRODUCT_ID(BAD_REQUEST, "잘못된 상품 ID 입니다"),
+    INVALID_IMAGE_INFROM(BAD_REQUEST, "잘못된 이미지 정보입니다"),
+    INVALID_IMAGE_STATUS(BAD_REQUEST, "잘못된 이미지 status입니다"),
     MAX_FILE_SIZE(BAD_REQUEST, "파일 용량이 최대치를 초과했습니다"),
 
     // 401 UNAUTHORIZED : 인증되지 않은 사용자
