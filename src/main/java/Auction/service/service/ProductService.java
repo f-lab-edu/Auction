@@ -57,6 +57,7 @@ public class ProductService {
     }
 
     /**
+     * 상품 정보 수정
      * @param productDto    : 업데이트할 product 정보
      * @param files         : 업데이트할 이미지 파일들
      * @param updateImgDtos : 업데이트할 이미지 정보 : product_img_id, status(INSERT, UPDATE, ORIGINAL)

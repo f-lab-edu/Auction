@@ -43,37 +43,29 @@ public class ProductDto {
 
         String saleType = productDto.getSaleType();
 
+        Product.ProductBuilder builder = Product.builder()
+                .name(productDto.getName())
+                .description(productDto.getDescription())
+                .saleType(SaleType.valueOf(saleType))
+                .status(ProductStatus.SALE)
+                .images(new ArrayList<>());
+
         if (saleType.equals(SaleType.FIX_AND_BIDDING)) { // 상품 판매 방법 : 고정가 + 경매
-            return Product.builder()
-                    .name(productDto.getName())
-                    .description(productDto.getDescription())
+            return builder
                     .fixPrice(productDto.getFixPrice())
                     .startPrice(productDto.getStartPrice())
                     .nowPrice(productDto.getStartPrice())
                     .deadline(productDto.getDeadline())
-                    .saleType(SaleType.valueOf(saleType))
-                    .status(ProductStatus.SALE)
-                    .images(new ArrayList<>())
                     .build();
         } else if (saleType.equals(SaleType.FIX)) { // 상품 판매 방법 : 고정가
-            return Product.builder()
-                    .name(productDto.getName())
-                    .description(productDto.getDescription())
+            return builder
                     .fixPrice(productDto.getFixPrice())
-                    .saleType(SaleType.valueOf(saleType))
-                    .status(ProductStatus.SALE)
-                    .images(new ArrayList<>())
                     .build();
         } else { // 상품 판매 방법 : 경매
-            return Product.builder()
-                    .name(productDto.getName())
-                    .description(productDto.getDescription())
+            return builder
                     .startPrice(productDto.getStartPrice())
                     .nowPrice(productDto.getStartPrice())
                     .deadline(productDto.getDeadline())
-                    .saleType(SaleType.valueOf(saleType))
-                    .status(ProductStatus.SALE)
-                    .images(new ArrayList<>())
                     .build();
         }
     }
