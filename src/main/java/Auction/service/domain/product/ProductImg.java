@@ -1,17 +1,19 @@
 package Auction.service.domain.product;
 
+import Auction.service.domain.BaseTime;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductImg {
+public class ProductImg extends BaseTime {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_img_id")
     private Long id;
 
@@ -19,14 +21,14 @@ public class ProductImg {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private String url;
+    private String file_name;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime regDate;
-
-    public ProductImg(Product product, String url) {
+    public ProductImg(Product product, String file_name) {
         this.product = product;
-        this.url = url;
+        this.file_name = file_name;
+    }
+
+    public void setFile_name(String file_name) {
+        this.file_name = file_name;
     }
 }

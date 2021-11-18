@@ -1,11 +1,13 @@
 package Auction.service.aop.product;
 
+import Auction.service.dto.ProductDeleteDto;
 import Auction.service.dto.ProductDto;
 import Auction.service.domain.product.SaleType;
 import Auction.service.exception.CustomException;
 import Auction.service.exception.CustomMessageException;
 import Auction.service.repository.CategoryRepository;
 import Auction.service.repository.MemberRepository;
+import Auction.service.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,6 +25,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Aspect
 public class ProductAspect {
 
+    private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
 
@@ -33,14 +36,10 @@ public class ProductAspect {
         BindingResult bindingResult = (BindingResult) joinPoint.getArgs()[2];
 
         // ProductDto 유효성 확인
-        if(bindingResult.hasErrors()) {
-            throw new CustomMessageException(BAD_REQUEST, bindingResult.getAllErrors().get(0).getDefaultMessage());
-        }
+        bindingResultCheck(bindingResult);
 
         // member 유효성 확인
-        if(!memberRepository.existsById(productDto.getMember_id())){
-            throw new CustomException(INVALID_MEMBER);
-        }
+        memberCheck(productDto.getMember_id());
 
         // 카테고리 유효성 확인
         if(!categoryRepository.existsById(productDto.getCategory_id())) {
@@ -59,4 +58,38 @@ public class ProductAspect {
             }
         }
     }
+
+    @Before("@annotation(Auction.service.aop.product.ProductDeleteCheck)")
+    private void productDeleteCheck(JoinPoint joinPoint) {
+
+        ProductDeleteDto productDeleteDto = (ProductDeleteDto) joinPoint.getArgs()[0];
+        BindingResult bindingResult = (BindingResult) joinPoint.getArgs()[1];
+
+        // ProductDeleteDto 유효성 확인
+        bindingResultCheck(bindingResult);
+
+        // member 유효성 확인
+        memberCheck(productDeleteDto.getMember_id());
+
+        // product 유효성 확인
+        if(!productRepository.existsById(productDeleteDto.getProduct_id())){
+            throw new CustomException(INVALID_PRODUCT);
+        }
+
+    }
+
+    private void memberCheck(Long member_id) {
+
+      if(!memberRepository.existsById(member_id)){
+          throw new CustomException(INVALID_MEMBER);
+        }
+    }
+
+    private void bindingResultCheck(BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            throw new CustomMessageException(BAD_REQUEST, bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+    }
+
 }
