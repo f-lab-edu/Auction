@@ -16,9 +16,9 @@ import java.util.ArrayList;
 public class ProductDto {
 
     @NotNull(message = "member_id가 없습니다")
-    private Long member_id;
+    private Long memberId;
 
-    private Long product_id;
+    private Long productId;
 
     @NotEmpty(message = "상품명을 입력해주세요")
     @Size(max = 30, message = "상품명은 최대 30자까지 입력 가능합니다")
@@ -28,7 +28,7 @@ public class ProductDto {
     private String description;
 
     @NotNull(message = "카테고리를 선택해주세요")
-    private Long category_id;
+    private Long categoryId;
 
     @NotEmpty(message = "판매방법을 선택해주세요")
     private String saleType;
@@ -50,14 +50,14 @@ public class ProductDto {
                 .status(ProductStatus.SALE)
                 .images(new ArrayList<>());
 
-        if (saleType.equals(SaleType.FIX_AND_BIDDING)) { // 상품 판매 방법 : 고정가 + 경매
+        if (saleType.equals(SaleType.FIX_AND_BIDDING.name())) { // 상품 판매 방법 : 고정가 + 경매
             return builder
                     .fixPrice(productDto.getFixPrice())
                     .startPrice(productDto.getStartPrice())
                     .nowPrice(productDto.getStartPrice())
                     .deadline(productDto.getDeadline())
                     .build();
-        } else if (saleType.equals(SaleType.FIX)) { // 상품 판매 방법 : 고정가
+        } else if (saleType.equals(SaleType.FIX.name())) { // 상품 판매 방법 : 고정가
             return builder
                     .fixPrice(productDto.getFixPrice())
                     .build();

@@ -39,10 +39,10 @@ public class ProductAspect {
         bindingResultCheck(bindingResult);
 
         // member 유효성 확인
-        memberCheck(productDto.getMember_id());
+        memberCheck(productDto.getMemberId());
 
         // 카테고리 유효성 확인
-        if(!categoryRepository.existsById(productDto.getCategory_id())) {
+        if(!categoryRepository.existsById(productDto.getCategoryId())) {
             throw new CustomException(INVALID_CATEGORY);
         }
 
