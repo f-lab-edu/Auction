@@ -16,6 +16,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -75,7 +76,7 @@ public class MemberAspect {
                             loginDto.getPassword()
                     )
             );
-        }catch(InternalAuthenticationServiceException e){
+        }catch(InternalAuthenticationServiceException | BadCredentialsException e){
             throw new CustomException(INVALID_PARAMS);
         }
 
