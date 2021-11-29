@@ -72,7 +72,7 @@ public class Product extends BaseTime {
 
         this.name = productDto.getName();
         this.description = productDto.getDescription();
-        this.saleType = SaleType.valueOf(productDto.getSaleType());
+        this.saleType = productDto.getSaleType();
 
         if (this.saleType.equals(SaleType.FIX)) {
             this.deadline = null;
