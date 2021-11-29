@@ -40,10 +40,10 @@ public class ProductService {
 
         Product product = ProductDto.toEntity(productDto);
 
-        Member member = memberRepository.getById(productDto.getMember_id());
+        Member member = memberRepository.getById(productDto.getMemberId());
         product.setMember(member);
 
-        Category category = categoryRepository.getById(productDto.getCategory_id());
+        Category category = categoryRepository.getById(productDto.getCategoryId());
         product.setCategory(category);
 
         Product saveProduct = productRepository.save(product);
@@ -64,7 +64,7 @@ public class ProductService {
      */
     public void update(ProductDto productDto, List<MultipartFile> files, List<UpdateImgDto> updateImgDtos) {
 
-        Product originalProduct = productRepository.getById(productDto.getProduct_id());
+        Product originalProduct = productRepository.getById(productDto.getProductId());
 
         if (originalProduct == null) {
             throw new CustomException(INVALID_PRODUCT_ID);
@@ -75,7 +75,7 @@ public class ProductService {
             throw new CustomException(INVALID_IMAGE_INFROM);
         }
 
-        Category category = categoryRepository.getById(productDto.getCategory_id());
+        Category category = categoryRepository.getById(productDto.getCategoryId());
         originalProduct.setCategory(category);
 
         originalProduct.update(productDto);

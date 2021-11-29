@@ -16,9 +16,9 @@ import java.util.ArrayList;
 public class ProductDto {
 
     @NotNull(message = "member_id가 없습니다")
-    private Long member_id;
+    private Long memberId;
 
-    private Long product_id;
+    private Long productId;
 
     @NotEmpty(message = "상품명을 입력해주세요")
     @Size(max = 30, message = "상품명은 최대 30자까지 입력 가능합니다")
@@ -28,10 +28,10 @@ public class ProductDto {
     private String description;
 
     @NotNull(message = "카테고리를 선택해주세요")
-    private Long category_id;
+    private Long categoryId;
 
-    @NotEmpty(message = "판매방법을 선택해주세요")
-    private String saleType;
+    @NotNull(message = "올바른 판매방법을 선택해주세요")
+    private SaleType saleType;
 
     private LocalDateTime deadline; // 경매 마감 시간
 
@@ -41,12 +41,12 @@ public class ProductDto {
 
     public static Product toEntity(ProductDto productDto) {
 
-        String saleType = productDto.getSaleType();
+        SaleType saleType = productDto.getSaleType();
 
         Product.ProductBuilder builder = Product.builder()
                 .name(productDto.getName())
                 .description(productDto.getDescription())
-                .saleType(SaleType.valueOf(saleType))
+                .saleType(saleType)
                 .status(ProductStatus.SALE)
                 .images(new ArrayList<>());
 

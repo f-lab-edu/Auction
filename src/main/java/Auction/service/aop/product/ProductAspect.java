@@ -39,20 +39,15 @@ public class ProductAspect {
         bindingResultCheck(bindingResult);
 
         // member 유효성 확인
-        memberCheck(productDto.getMember_id());
+        memberCheck(productDto.getMemberId());
 
         // 카테고리 유효성 확인
-        if(!categoryRepository.existsById(productDto.getCategory_id())) {
+        if(!categoryRepository.existsById(productDto.getCategoryId())) {
             throw new CustomException(INVALID_CATEGORY);
         }
 
-        // 판매방법 유효성 확인
-        if(SaleType.valueOf(productDto.getSaleType())==null) {
-            throw new CustomException(INVALID_SALETYPE);
-        }
-
         // 판매방법이 경매 or 경매&즉시구매일때 경매마감시간 유효성 확인
-        if(productDto.getSaleType() == SaleType.BIDDING.name() || productDto.getSaleType() == SaleType.FIX_AND_BIDDING.name()) {
+        if(productDto.getSaleType() == SaleType.BIDDING || productDto.getSaleType() == SaleType.FIX_AND_BIDDING) {
             if(productDto.getDeadline().isBefore(LocalDateTime.now())) {
                 throw new CustomException(INVALID_TIME);
             }
