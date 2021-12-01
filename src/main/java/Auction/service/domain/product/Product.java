@@ -2,6 +2,7 @@ package Auction.service.domain.product;
 
 import Auction.service.domain.BaseTime;
 import Auction.service.domain.member.Member;
+import Auction.service.dto.ProductDetailsDto;
 import Auction.service.dto.ProductDto;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Entity
@@ -68,6 +70,8 @@ public class Product extends BaseTime {
         this.member = member;
     }
 
+    public void setNowPrice(Integer price) { this.nowPrice = price; }
+
     public void update(ProductDto productDto) {
 
         this.name = productDto.getName();
@@ -91,5 +95,22 @@ public class Product extends BaseTime {
             this.fixPrice = null;
         }
 
+    }
+
+    public ProductDetailsDto toProductDetailsDto() {
+        return ProductDetailsDto
+                .builder()
+                .name(this.getName())
+                .description(this.getDescription())
+                .images(this.getImages().stream().map(ProductImg::getFile_name).collect(Collectors.toList()))
+                .sellerNickname(this.getMember().getNickname())
+                .category(this.getCategory().getName())
+                .status(this.getStatus())
+                .saleType(this.getSaleType())
+                .deadline(this.getDeadline())
+                .startPrice(this.getStartPrice())
+                .fixPrice(this.getFixPrice())
+                .nowPrice(this.getNowPrice())
+                .build();
     }
 }
