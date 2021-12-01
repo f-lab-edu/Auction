@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 
 /**
  * message 변경시
- * MemberDtoTest 수정 필요
+ * MemberControllerTest join 관련 메서드 message expect value 수정 필요
  */
 @Getter
 @AllArgsConstructor
