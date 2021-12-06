@@ -4,6 +4,7 @@ import Auction.service.domain.product.Product;
 import Auction.service.domain.product.ProductStatus;
 import Auction.service.domain.product.SaleType;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
@@ -33,6 +34,7 @@ public class ProductDto {
     @NotNull(message = "올바른 판매방법을 선택해주세요")
     private SaleType saleType;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime deadline; // 경매 마감 시간
 
     private int startPrice; // 시작가

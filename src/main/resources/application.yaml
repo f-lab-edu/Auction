@@ -27,6 +27,10 @@ spring:
     baseline-on-migrate: true # flyway_schema_history 테이블을 자동으로 생성할지 여부
     baseline-version: 0 # 최초 버전 정보
 
+  redis:
+    port: 6379
+    host: localhost
+
 # JPA 쿼리 파라미터 확인
 logging:
   level:

@@ -2,10 +2,7 @@ package Auction.service.controller;
 
 import Auction.service.aop.product.ProductCheck;
 import Auction.service.aop.product.ProductDeleteCheck;
-import Auction.service.dto.ProductDeleteDto;
-import Auction.service.dto.ProductDto;
-import Auction.service.dto.Result;
-import Auction.service.dto.UpdateImgDto;
+import Auction.service.dto.*;
 import Auction.service.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -51,4 +48,10 @@ public class ProductController {
         productService.update(productDto, images, updateImgDtos);
         return Result.toResponseEntity(SUCCESS);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Result> detailsProduct(@PathVariable Long id) {
+        return Result.toResponseEntity(SUCCESS, productService.detail(id));
+    }
+
 }

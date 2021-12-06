@@ -4,9 +4,7 @@ import Auction.service.domain.product.Category;
 import Auction.service.domain.member.Member;
 import Auction.service.domain.product.Product;
 import Auction.service.domain.product.ProductImg;
-import Auction.service.dto.ProductDeleteDto;
-import Auction.service.dto.ProductDto;
-import Auction.service.dto.UpdateImgDto;
+import Auction.service.dto.*;
 import Auction.service.exception.CustomException;
 import Auction.service.repository.CategoryRepository;
 import Auction.service.repository.MemberRepository;
@@ -167,6 +165,17 @@ public class ProductService {
                 }
             }
         }
+    }
+
+    public ProductDetailsDto detail(Long id) {
+
+        Product productEntityGraph = productRepository.findProductById(id);
+
+        if (productEntityGraph == null) {
+            throw new CustomException(INVALID_PRODUCT_ID);
+        }
+
+        return productEntityGraph.toProductDetailsDto();
     }
 
 }
