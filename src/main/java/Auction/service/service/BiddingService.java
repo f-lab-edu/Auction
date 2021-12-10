@@ -8,33 +8,30 @@ import Auction.service.redis.RedisPublisher;
 import Auction.service.redis.RedisSubscriber;
 import Auction.service.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.annotation.PostConstruct;
+import java.io.IOException;
 
 import static Auction.service.utils.ResultCode.*;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class BiddingService {
 
+    public final static String PRODUCT_PRICE_CHANNEL_NAME = "productPrice_";
+    private final Long DEFAULT_TIMEOUT = 10L * 60 * 1000; // 10분
+
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
     private final BiddingRepository biddingRepository;
+    private final SseEmitterRepository sseEmitterRepository;
 
-    private final RedisTemplate redisTemplate;
-    private final RedisMessageListenerContainer redisMessageListenerContainer;
-    private RedisSubscriber redisSubscriber;
-    private RedisPublisher redisPublisher;
-
-    @PostConstruct
-    private void init() {
-        redisSubscriber = new RedisSubscriber(redisMessageListenerContainer);
-        redisPublisher = new RedisPublisher(redisTemplate);
-    }
+    private final RedisSubscriber redisSubscriber;
+    private final RedisPublisher redisPublisher;
 
     @Transactional
     public void bidding(BiddingDto biddingDto) {
@@ -60,12 +57,29 @@ public class BiddingService {
             bidding.setProduct(updateProduct);
             biddingRepository.save(bidding);
 
-            // redis pub
-            redisPublisher.publish("product_" + productId, price);
+            redisPublisher.publish(PRODUCT_PRICE_CHANNEL_NAME+productId, price);
         } else {
             throw new CustomException(INVALID_PRICE);
         }
 
+    }
+
+    public SseEmitter priceSubscribe(Long productId) {
+
+        String channelName = PRODUCT_PRICE_CHANNEL_NAME + productId;
+        redisSubscriber.createChannel(channelName);
+
+        SseEmitter sseEmitter = new SseEmitter(DEFAULT_TIMEOUT);
+        sseEmitterRepository.save(channelName, sseEmitter);
+
+        try {
+            // sse 연결 후 유효 기간이 끝나지 않을 때까지 데이터를 보내지 않으면 503 에러 발생.
+            // 따라서 더미 데이터를 보내준다
+            sseEmitter.send(SseEmitter.event().data("init"));
+        } catch (IOException e) {
+            sseEmitterRepository.delete(channelName,sseEmitter);
+        }
+        return sseEmitter;
     }
 
 }
