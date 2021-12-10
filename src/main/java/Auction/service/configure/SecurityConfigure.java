@@ -43,22 +43,11 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/member/**","/api/products/**","/api/product/{id}").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/api/bidding", "/api/product").authenticated()
+                .anyRequest().permitAll()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-        http.formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/", true)
-                .permitAll()
-                .and()
-                .httpBasic()
-                .and()
-                .csrf().disable()
-                .logout()
-                .logoutSuccessUrl("/login");
     }
 }
