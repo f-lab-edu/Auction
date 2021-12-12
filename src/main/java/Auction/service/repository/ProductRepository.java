@@ -15,7 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Product findProductById(Long id);
 
     @Modifying
-    @Query("update Product p set p.nowPrice=:price where p.id=:id and p.nowPrice<=:price")
+    @Query("update Product p set p.nowPrice=:price where p.id=:id and p.nowPrice<:price")
     int updateProductPrice(@Param("id") Long id, @Param("price") Integer price);
 
 }

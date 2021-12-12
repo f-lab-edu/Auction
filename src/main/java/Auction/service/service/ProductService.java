@@ -6,10 +6,8 @@ import Auction.service.domain.product.Product;
 import Auction.service.domain.product.ProductImg;
 import Auction.service.dto.*;
 import Auction.service.exception.CustomException;
-import Auction.service.repository.CategoryRepository;
-import Auction.service.repository.MemberRepository;
-import Auction.service.repository.ProductImgRepository;
-import Auction.service.repository.ProductRepository;
+import Auction.service.redis.RedisSubscriber;
+import Auction.service.repository.*;
 import Auction.service.utils.ResultCode;
 import Auction.service.utils.S3Upload;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static Auction.service.dto.UpdateImgDto.Status.*;
+import static Auction.service.service.BiddingService.PRODUCT_PRICE_CHANNEL_NAME;
 import static Auction.service.utils.ResultCode.INVALID_IMAGE_INFROM;
 import static Auction.service.utils.ResultCode.INVALID_PRODUCT_ID;
 
@@ -32,6 +31,8 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
+    private final SseEmitterRepository sseEmitterRepository;
+    private final RedisSubscriber redisSubscriber;
     private final S3Upload s3Upload;
 
     public void upload(ProductDto productDto, List<MultipartFile> images) {
@@ -165,6 +166,10 @@ public class ProductService {
                 }
             }
         }
+
+        String channelName = PRODUCT_PRICE_CHANNEL_NAME + product_id;
+        redisSubscriber.removeChannel(channelName);
+        sseEmitterRepository.deleteAll(channelName);
     }
 
     public ProductDetailsDto detail(Long id) {
