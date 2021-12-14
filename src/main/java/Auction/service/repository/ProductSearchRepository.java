@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductSearchRepository extends JpaRepository<Product, Long> {
+public interface ProductSearchRepository extends JpaRepository<Product, Long>, ProductSearchCustom {
 
     @Query(nativeQuery = true,
             value = "select p.product_id as id , p.name as productName, c.name as categoryName, p.sale_type as saleType, p.fix_price as fixPrice, p.now_price as nowPrice, pi.file_name as fileName " +
