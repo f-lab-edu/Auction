@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -23,9 +24,14 @@ public class ProductImg extends BaseTime {
 
     private String file_name;
 
-    public ProductImg(Product product, String file_name) {
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private ProductThumbnailState thumbState;
+
+    public ProductImg(Product product, String file_name, ProductThumbnailState state) {
         this.product = product;
         this.file_name = file_name;
+        this.thumbState = state;
     }
 
     public void setFile_name(String file_name) {
