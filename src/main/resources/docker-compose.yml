@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+
+  mariadb:
+    container_name: maria_db
+    image: mariadb:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: test1234
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test1234
+      MYSQL_DATABASE: testdb
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
