@@ -4,6 +4,7 @@ import Auction.service.domain.product.Category;
 import Auction.service.domain.member.Member;
 import Auction.service.domain.product.Product;
 import Auction.service.domain.product.ProductImg;
+import Auction.service.domain.product.ProductThumbnailState;
 import Auction.service.dto.*;
 import Auction.service.exception.CustomException;
 import Auction.service.redis.RedisSubscriber;
@@ -47,9 +48,20 @@ public class ProductService {
 
         Product saveProduct = productRepository.save(product);
 
+        boolean isThumbnail = true;
+        ProductThumbnailState state = ProductThumbnailState.THUMBNAIL;
+
         if (images != null) {
             for (MultipartFile image : images) {
-                saveProduct.addImage(new ProductImg(saveProduct, s3Upload.upload(image)));
+                String file_name = s3Upload.upload(image);
+
+                saveProduct.addImage(new ProductImg(saveProduct, file_name, state));
+
+                if(isThumbnail == true){
+                    state = ProductThumbnailState.NORMAL;
+                    isThumbnail = false;
+                }
+
             }
             productRepository.save(saveProduct);
         }
@@ -113,7 +125,14 @@ public class ProductService {
                 } else {
                     // 이미지 추가 : S3에 업로드
                     if (valueOf(status) == INSERT) {
-                        originalImgs.add(new ProductImg(originalProduct, s3Upload.upload(files.get(updateIdx))));
+                        if(originalImgs.isEmpty() == true){
+                            originalImgs.add(new ProductImg(originalProduct, s3Upload.upload(files.get(updateIdx)),
+                                    ProductThumbnailState.THUMBNAIL));
+                        }else {
+                            originalImgs.add(new ProductImg(originalProduct, s3Upload.upload(files.get(updateIdx)),
+                                    ProductThumbnailState.NORMAL));
+                        }
+
                     }
                 }
             }

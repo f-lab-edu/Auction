@@ -1,0 +1,1 @@
+alter table product_img add (thumb_state varchar(255) default null);
