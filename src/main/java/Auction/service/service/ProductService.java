@@ -53,9 +53,9 @@ public class ProductService {
 
         if (images != null) {
             for (MultipartFile image : images) {
-                String file_name = s3Upload.upload(image);
+                String fileName = s3Upload.upload(image);
 
-                saveProduct.addImage(new ProductImg(saveProduct, file_name, state));
+                saveProduct.addImage(new ProductImg(saveProduct, fileName, state));
 
                 if(isThumbnail == true){
                     state = ProductThumbnailState.NORMAL;
@@ -118,8 +118,8 @@ public class ProductService {
                     // 이미지 수정 : S3에서 이미지 삭제 후 새로운 파일 업로드
                     if (valueOf(status) == UPDATE) {
                         Optional<ProductImg> productImg = originalImgs.stream().filter(img -> img.getId() == updateImgId).findAny();
-                        s3Upload.delete(productImg.get().getFile_name());
-                        originalImgs.get(originalImgIds.indexOf(updateImgId)).setFile_name(s3Upload.upload(files.get(updateIdx)));
+                        s3Upload.delete(productImg.get().getFileName());
+                        originalImgs.get(originalImgIds.indexOf(updateImgId)).setFileName(s3Upload.upload(files.get(updateIdx)));
                     }
                     // 기존에 없는 product_img_id일 경우
                 } else {
@@ -154,14 +154,14 @@ public class ProductService {
             if (!updateImgIds.contains(originalImgId)) {
                 Optional<ProductImg> productImg = originalProductImages.stream().filter(img -> img.getId() == originalImgId).findAny();
                 originalProductImages.remove(productImg.get());
-                s3Upload.delete(productImg.get().getFile_name());
+                s3Upload.delete(productImg.get().getFileName());
             }
         }
     }
 
     private void deleteAllImage(List<ProductImg> originalProductImages) {
         for (ProductImg findProductImage : originalProductImages) {
-            s3Upload.delete(findProductImage.getFile_name());
+            s3Upload.delete(findProductImage.getFileName());
         }
         originalProductImages.removeAll(originalProductImages);
     }
@@ -181,7 +181,7 @@ public class ProductService {
             List<ProductImg> productImgs = product.getImages();
             if (productImgs != null) {
                 for (ProductImg productImg : productImgs) {
-                    s3Upload.delete(productImg.getFile_name());
+                    s3Upload.delete(productImg.getFileName());
                 }
             }
         }

@@ -22,19 +22,20 @@ public class ProductImg extends BaseTime {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private String file_name;
+    @Column(name="file_name")
+    private String fileName;
 
     @Enumerated(EnumType.STRING)
     @NotNull
     private ProductThumbnailState thumbState;
 
-    public ProductImg(Product product, String file_name, ProductThumbnailState state) {
+    public ProductImg(Product product, String fileName, ProductThumbnailState state) {
         this.product = product;
-        this.file_name = file_name;
+        this.fileName = fileName;
         this.thumbState = state;
     }
 
-    public void setFile_name(String file_name) {
-        this.file_name = file_name;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }
