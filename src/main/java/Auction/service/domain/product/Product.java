@@ -102,7 +102,7 @@ public class Product extends BaseTime {
                 .builder()
                 .name(this.getName())
                 .description(this.getDescription())
-                .images(this.getImages().stream().map(ProductImg::getFile_name).collect(Collectors.toList()))
+                .images(this.getImages().stream().map(ProductImg::getFileName).collect(Collectors.toList()))
                 .sellerNickname(this.getMember().getNickname())
                 .category(this.getCategory().getName())
                 .status(this.getStatus())
