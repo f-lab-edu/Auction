@@ -1,9 +1,13 @@
 package Auction.service;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import javax.persistence.EntityManager;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
@@ -18,5 +22,10 @@ public class ServiceApplication {
 		new SpringApplicationBuilder(ServiceApplication.class)
 				.properties(APPLICATION_LOCATIONS)
 				.run(args);
+	}
+
+	@Bean
+	JPAQueryFactory jpaQueryFactory(EntityManager em){
+		return new JPAQueryFactory(em);
 	}
 }
