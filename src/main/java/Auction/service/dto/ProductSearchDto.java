@@ -12,7 +12,7 @@ public class ProductSearchDto {
 
     private Long id;
     private String productName;
-    private Category categoryName;
+    private Category category;
     private SaleType saleType;
     private int fixPrice;
     private int nowPrice;
@@ -20,11 +20,11 @@ public class ProductSearchDto {
 
     @QueryProjection
     public ProductSearchDto(Long id, String productName,
-                            Category categoryName, SaleType saleType,
+                            Category category, SaleType saleType,
                             int fixPrice, int nowPrice, String fileName) {
         this.id = id;
         this.productName = productName;
-        this.categoryName = categoryName;
+        this.category = category;
         this.saleType = saleType;
         this.fixPrice = fixPrice;
         this.nowPrice = nowPrice;
