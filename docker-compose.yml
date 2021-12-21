@@ -23,7 +23,7 @@ services:
 
   app:
     container_name: app
-    image: acecic82/auction-service:0.0
+    image: 473778033566.dkr.ecr.us-east-1.amazonaws.com/auction-service:latest
     build:
       context: ./app
 
