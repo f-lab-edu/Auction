@@ -41,6 +41,7 @@ dependencies {
 	testImplementation "org.testcontainers:testcontainers:1.16.2"
 	testImplementation "org.testcontainers:junit-jupiter:1.16.2"
 	testImplementation "org.testcontainers:mariadb:1.16.2"
+
 }
 
 test {
@@ -61,4 +62,8 @@ configurations {
 }
 compileQuerydsl{
 	options.annotationProcessorPath = configurations.querydsl
+}
+
+bootJar{
+	archiveFileName = 'auction.jar'
 }
