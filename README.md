@@ -12,15 +12,13 @@ QueryDSL 사용법
 - 안될 시 service에서 Run Configurations에 cleanQuerydslSourceDir클릭 후 initQuerydslSourceDir을 클릭한다
 - 그 이후 다시 service에 Task에 oteher에서 compileQuerydsl버튼으로 Qfile을 생성한다.
 
-DockerFile 생성 방법
+DockerFile 활용 방법
 
 - gradle에서 Acution [bootJar]를 실행한다
-- Dockerfile이 위히한 곳에서 docker build -t auction-service:0.0 ./ 명령어를 입력한다
-- (이미지파일 이름):(tag)
-- docker tag auction-service:0.0 acecic82/auction-service:0.0을 입력하여 태그파일을 만든다
-- (acecic82/auction-service는 현재 사용하고 있는 도커 허브 repository 주소)
-- docker push acecic82/auction-service:0.0를 입력하여(이미지 파일 이름이 다를경우 변경될 수 있음) 해당 docker hub repo로 푸시해준다
-- docker-compose 파일의 app의 image부분을 적절한 이미지파일 주소로 변경하여(주로 태그) pull 받아올 수 있게 변경한다
+- 이미지를 만든 후 태그를 473778033566.dkr.ecr.us-east-1.amazonaws.com/auction-service:latest로 만듭니다
+- docker push를 통해 473778033566.dkr.ecr.us-east-1.amazonaws.com/auction-service:latest로 푸시를 합니다
+- (aws cli 미 설치시 설치 필요)
+- (aws configure 에서 accessKey secretKey 설정 필요 해당 키는 문의바랍니다)
 
 Docker-Compose 사용법
 
