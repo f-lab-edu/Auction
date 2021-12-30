@@ -3,25 +3,23 @@ package Auction.service.cache;
 import Auction.service.dto.ProductSearchDto;
 import lombok.Data;
 import org.springframework.data.redis.core.RedisHash;
-
 import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 @Data
-@RedisHash(value = "category", timeToLive = 300L) //300초
+@RedisHash(value = "category", timeToLive = 60L) //60초
 public class RedisCategoryContainer {
 
     @Id
     private Long id;
 
-    private List<ProductSearchDto> productItems;
+    private LinkedList<ProductSearchDto> productItems;
 
     private final static int queueSize = 20;
 
     public RedisCategoryContainer(){
         id = null;
-        productItems = new ArrayList<>();
+        productItems = new LinkedList<>();
     }
 
     public void setProductItems(ProductSearchDto productItem){
