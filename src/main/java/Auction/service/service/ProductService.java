@@ -1,5 +1,6 @@
 package Auction.service.service;
 
+import Auction.service.cache.ProductSearchCacheRepository;
 import Auction.service.domain.product.Category;
 import Auction.service.domain.member.Member;
 import Auction.service.domain.product.Product;
@@ -35,6 +36,7 @@ public class ProductService {
     private final SseEmitterRepository sseEmitterRepository;
     private final RedisSubscriber redisSubscriber;
     private final S3Upload s3Upload;
+    private final ProductSearchCacheRepository productSearchCacheRepository;
 
     public void upload(ProductDto productDto, List<MultipartFile> images) {
 
@@ -64,6 +66,9 @@ public class ProductService {
 
             }
             productRepository.save(saveProduct);
+            if(productSearchCacheRepository.existsById(saveProduct.getCategory().getId())){
+                productSearchCacheRepository.deleteById(saveProduct.getCategory().getId());
+            }
         }
     }
 
@@ -145,7 +150,9 @@ public class ProductService {
 
         productImgRepository.saveAll(originalImgs);
         productRepository.save(originalProduct);
-
+        if(productSearchCacheRepository.existsById(originalProduct.getCategory().getId())){
+            productSearchCacheRepository.deleteById(originalProduct.getCategory().getId());
+        }
     }
 
     private void deleteImage(List<UpdateImgDto> updateImgDtos, List<ProductImg> originalProductImages, List<Long> originalImgIds) {
@@ -176,7 +183,9 @@ public class ProductService {
         if (member_id.equals(product.getMember().getId())) {
             // orphanRemoval 설정으로 상품 이미지도 같이 삭제됨
             productRepository.delete(product);
-
+            if(productSearchCacheRepository.existsById(product.getCategory().getId())){
+                productSearchCacheRepository.deleteById(product.getCategory().getId());
+            }
             // s3 이미지 삭제
             List<ProductImg> productImgs = product.getImages();
             if (productImgs != null) {
