@@ -1,5 +1,6 @@
 package Auction.service.controller;
 
+import Auction.service.aop.product.OrderCheck;
 import Auction.service.aop.product.ProductCheck;
 import Auction.service.aop.product.ProductDeleteCheck;
 import Auction.service.dto.*;
@@ -52,6 +53,13 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<Result> detailsProduct(@PathVariable Long id) {
         return Result.toResponseEntity(SUCCESS, productService.detail(id));
+    }
+
+    @OrderCheck
+    @PostMapping("/order")
+    public ResponseEntity<Result> order(@RequestBody @Valid OrderInfoDto orderInfoDto, BindingResult bindingResult) {
+        productService.order(orderInfoDto);
+        return Result.toResponseEntity(SUCCESS);
     }
 
 }
