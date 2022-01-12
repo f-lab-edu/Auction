@@ -1,11 +1,8 @@
 package Auction.service.service;
 
 import Auction.service.cache.ProductSearchCacheRepository;
-import Auction.service.domain.product.Category;
+import Auction.service.domain.product.*;
 import Auction.service.domain.member.Member;
-import Auction.service.domain.product.Product;
-import Auction.service.domain.product.ProductImg;
-import Auction.service.domain.product.ProductThumbnailState;
 import Auction.service.dto.*;
 import Auction.service.exception.CustomException;
 import Auction.service.redis.RedisSubscriber;
@@ -13,6 +10,7 @@ import Auction.service.repository.*;
 import Auction.service.utils.ResultCode;
 import Auction.service.utils.S3Upload;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,11 +22,16 @@ import static Auction.service.dto.UpdateImgDto.Status.*;
 import static Auction.service.service.BiddingService.PRODUCT_PRICE_CHANNEL_NAME;
 import static Auction.service.utils.ResultCode.INVALID_IMAGE_INFROM;
 import static Auction.service.utils.ResultCode.INVALID_PRODUCT_ID;
+import static Auction.service.utils.ResultCode.INVALID_MEMBER;
+import static Auction.service.utils.ResultCode.INVALID_PRODUCT;
+import static Auction.service.utils.ResultCode.INVALID_CATEGORY;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class ProductService {
 
+    private final OrderRepository orderRepository;
     private final ProductImgRepository productImgRepository;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
@@ -39,13 +42,12 @@ public class ProductService {
     private final ProductSearchCacheRepository productSearchCacheRepository;
 
     public void upload(ProductDto productDto, List<MultipartFile> images) {
-
         Product product = ProductDto.toEntity(productDto);
 
-        Member member = memberRepository.getById(productDto.getMemberId());
+        Member member = memberRepository.findById(productDto.getMemberId()).orElseThrow(()-> new CustomException(INVALID_MEMBER));
         product.setMember(member);
 
-        Category category = categoryRepository.getById(productDto.getCategoryId());
+        Category category = categoryRepository.findById(productDto.getCategoryId()).orElseThrow(()-> new CustomException(INVALID_CATEGORY));
         product.setCategory(category);
 
         Product saveProduct = productRepository.save(product);
@@ -66,9 +68,10 @@ public class ProductService {
 
             }
             productRepository.save(saveProduct);
-            if(productSearchCacheRepository.existsById(saveProduct.getCategory().getId())){
-                productSearchCacheRepository.deleteById(saveProduct.getCategory().getId());
-            }
+        }
+
+        if(productSearchCacheRepository.existsById(saveProduct.getCategory().getId())){
+            productSearchCacheRepository.deleteById(saveProduct.getCategory().getId());
         }
     }
 
@@ -80,18 +83,14 @@ public class ProductService {
      */
     public void update(ProductDto productDto, List<MultipartFile> files, List<UpdateImgDto> updateImgDtos) {
 
-        Product originalProduct = productRepository.getById(productDto.getProductId());
-
-        if (originalProduct == null) {
-            throw new CustomException(INVALID_PRODUCT_ID);
-        }
+        Product originalProduct = productRepository.findById(productDto.getProductId()).orElseThrow(()-> new CustomException(INVALID_PRODUCT_ID));
 
         // files, updateImgDtos size 일치하지 않을 경우
         if (files != null && updateImgDtos != null && (files.size() != updateImgDtos.size())) {
             throw new CustomException(INVALID_IMAGE_INFROM);
         }
 
-        Category category = categoryRepository.getById(productDto.getCategoryId());
+        Category category = categoryRepository.findById(productDto.getCategoryId()).orElseThrow(()-> new CustomException(INVALID_CATEGORY));
         originalProduct.setCategory(category);
 
         originalProduct.update(productDto);
@@ -178,7 +177,7 @@ public class ProductService {
         Long product_id = productDeleteDto.getProduct_id();
         Long member_id = productDeleteDto.getMember_id();
 
-        Product product = productRepository.getById(product_id);
+        Product product = productRepository.findById(product_id).orElseThrow(()-> new CustomException(INVALID_CATEGORY));
 
         if (member_id.equals(product.getMember().getId())) {
             // orphanRemoval 설정으로 상품 이미지도 같이 삭제됨
@@ -193,6 +192,8 @@ public class ProductService {
                     s3Upload.delete(productImg.getFileName());
                 }
             }
+        } else {
+            throw new CustomException(INVALID_MEMBER);
         }
 
         String channelName = PRODUCT_PRICE_CHANNEL_NAME + product_id;
@@ -209,6 +210,21 @@ public class ProductService {
         }
 
         return productEntityGraph.toProductDetailsDto();
+    }
+
+    public void order(OrderInfoDto orderInfoDto) {
+
+        Long memberId = orderInfoDto.getMemberId();
+        Long productId = orderInfoDto.getProductId();
+        int price = orderInfoDto.getPrice();
+
+        // 상품의 최종 입찰자인지 확인
+        Product product = productRepository.findBiddingProduct(memberId, productId, price).orElseThrow(() -> new CustomException(INVALID_PRODUCT));
+        Member member = product.getMember();
+
+        Order order = OrderInfoDto.toEntity(member, product, price);
+
+        orderRepository.save(order);
     }
 
 }
