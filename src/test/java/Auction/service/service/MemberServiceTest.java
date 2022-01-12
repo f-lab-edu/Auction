@@ -3,45 +3,51 @@ package Auction.service.service;
 import Auction.service.domain.member.Member;
 import Auction.service.dto.MemberDto;
 import Auction.service.repository.MemberRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.transaction.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
 
-    @Autowired
-    MemberService memberService;
-
-    @Autowired
+    @Mock
     MemberRepository memberRepository;
 
-    @Test
-    @DisplayName("회원가입 성공")
-    void registerMember(){
-        MemberDto memberDto = new MemberDto("0100000000", "pass", "ss");
+    @Mock
+    PasswordEncoder passwordEncoder;
 
-        memberService.registerMember(memberDto);
+    @InjectMocks
+    MemberService memberService;
 
-        Member findMember = memberRepository.findByPhone(memberDto.getPhone());
-        assertThat(findMember.getPhone()).isEqualTo(memberDto.getPhone());
+    MemberDto memberDto;
+
+    Member member;
+
+    @BeforeEach
+    void before() {
+        memberDto = new MemberDto("01099999999", "test1234", "name");
+        member = MemberDto.toEntity(memberDto, passwordEncoder);
     }
 
     @Test
-    @DisplayName("휴대폰 번호 중복 검사")
-    void checkMemberByPhone() {
-        MemberDto memberDto1 = new MemberDto("01099999999", "test1234", "name");
-        memberService.registerMember(memberDto1);
+    @DisplayName("회원가입 - O")
+    void registerMember_success(){
+        Member joinMember = Member.builder().id(1L).build();
+        given(memberRepository.save(any())).willReturn(joinMember);
 
-        assertTrue(memberService.checkMemberByPhone("01099999999"));
-        assertFalse(memberService.checkMemberByPhone("test2"));
+        assertThat(memberService.registerMember(memberDto)).isEqualTo(1l);
+        verify(memberRepository, times(1)).save(any());
     }
 
 }
