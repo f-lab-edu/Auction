@@ -10,8 +10,8 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@AllArgsConstructor
+@NoArgsConstructor
 public class Member extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
