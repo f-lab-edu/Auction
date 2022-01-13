@@ -1,0 +1,1 @@
+ alter table product add (last_bidding_member_id bigint default null, send_sms bool default null)

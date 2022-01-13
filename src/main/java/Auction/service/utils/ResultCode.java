@@ -29,6 +29,8 @@ public enum ResultCode {
     INVALID_IMAGE_STATUS(BAD_REQUEST, "잘못된 이미지 status입니다"),
     MAX_FILE_SIZE(BAD_REQUEST, "파일 용량이 최대치를 초과했습니다"),
     INVALID_PRICE(BAD_REQUEST, "현재 입찰가보다 낮게 입찰할 수 없습니다"),
+    INVALID_FIX_PRICE(BAD_REQUEST, "상품 고정 가격을 입력해주세요"),
+    INVALID_BIDDING_PRICE(BAD_REQUEST, "상품 시작 가격을 입력해주세요"),
 
     // 401 UNAUTHORIZED : 인증되지 않은 사용자
     INVALID_AUTH_TOKEN(UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),

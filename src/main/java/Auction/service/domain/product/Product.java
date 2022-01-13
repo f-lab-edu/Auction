@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 @Getter
 @Entity
 @Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product extends BaseTime {
 
     @Id
@@ -57,6 +57,9 @@ public class Product extends BaseTime {
     private Integer startPrice; // 시작가
     private Integer fixPrice; //즉시 구매가
     private Integer nowPrice; // 현재가
+
+    private Long lastBiddingMemberId; // 최종 입찰자 id
+    private Boolean sendSms; // 최종 입찰자에게 SMS 발송 여부
 
     public void addImage(ProductImg productImg) {
         this.images.add(productImg);

@@ -37,9 +37,9 @@ public class ProductDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime deadline; // 경매 마감 시간
 
-    private int startPrice; // 시작가
+    private Integer startPrice; // 시작가
 
-    private int fixPrice; //즉시 구매가
+    private Integer fixPrice; //즉시 구매가
 
     public static Product toEntity(ProductDto productDto) {
 

@@ -4,7 +4,6 @@ import Auction.service.domain.member.Member;
 import Auction.service.domain.product.*;
 import Auction.service.dto.*;
 import Auction.service.exception.CustomException;
-import Auction.service.redis.RedisPublisher;
 import Auction.service.redis.RedisSubscriber;
 import Auction.service.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -31,33 +30,33 @@ public class BiddingService {
     private final SseEmitterRepository sseEmitterRepository;
 
     private final RedisSubscriber redisSubscriber;
-    private final RedisPublisher redisPublisher;
 
     @Transactional
     public void bidding(BiddingDto biddingDto) {
 
-        Member member = memberRepository.getById(biddingDto.getMemberId());
+        Long memberId = biddingDto.getMemberId();
 
-        if (member == null) {
-            throw new CustomException(INVALID_MEMBER);
-        }
+        Member member = memberRepository.findById(memberId).orElseThrow(()->new CustomException(INVALID_MEMBER));
 
         Integer price = biddingDto.getPrice();
         Long productId = biddingDto.getProductId();
 
+        Product updateProduct = productRepository.findById(productId).orElseThrow(()->new CustomException(INVALID_PRODUCT));
+
+        if(updateProduct.getSaleType()==SaleType.FIX) {
+            throw new CustomException(INVALID_PRODUCT);
+        }
+
         // 변경되면 1, 변경 안되면 0 반환
-        int updateCheck = productRepository.updateProductPrice(productId, price);
+        int updateCheck = productRepository.updateProductPrice(productId, price, memberId);
 
         if (updateCheck == 1) {
-
-            Product updateProduct = productRepository.getById(productId);
 
             Bidding bidding = BiddingDto.toEntity(biddingDto);
             bidding.setMember(member);
             bidding.setProduct(updateProduct);
             biddingRepository.save(bidding);
 
-            redisPublisher.publish(PRODUCT_PRICE_CHANNEL_NAME+productId, price);
         } else {
             throw new CustomException(INVALID_PRICE);
         }
