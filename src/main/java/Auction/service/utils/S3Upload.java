@@ -25,9 +25,6 @@ public class S3Upload {
     private final AmazonS3Client amazonS3Client;
     public static String PRODUCT_FOLDER = "product/";
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
-
     public String upload(MultipartFile file) {
 
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
@@ -37,7 +34,8 @@ public class S3Upload {
             byte[] bytes = IOUtils.toByteArray(file.getInputStream());
             objMeta.setContentLength(bytes.length);
 
-            amazonS3Client.putObject(new PutObjectRequest(bucket, PRODUCT_FOLDER + fileName, file.getInputStream(), objMeta)
+            amazonS3Client.putObject(new PutObjectRequest(System.getenv("AWS_S3_BUCKET_KEY"),
+                    PRODUCT_FOLDER + fileName, file.getInputStream(), objMeta)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
             throw new CustomMessageException(INTERNAL_SERVER_ERROR, e.getMessage());
@@ -47,6 +45,6 @@ public class S3Upload {
     }
 
     public void delete(String fileName) {
-        amazonS3Client.deleteObject(bucket, PRODUCT_FOLDER + fileName);
+        amazonS3Client.deleteObject(System.getenv("AWS_S3_BUCKET_KEY"), PRODUCT_FOLDER + fileName);
     }
 }
