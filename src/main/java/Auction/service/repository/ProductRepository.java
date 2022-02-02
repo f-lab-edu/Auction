@@ -28,8 +28,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findBiddingProduct(@Param("memberId") Long memberId, @Param("productId") Long productId, @Param("price") int price);
 
     @Query(
-            value = "select p.product_id as productId, p.name as productName, p.now_price as productPrice, m.phone as memberPhone from product p left join member m on m.member_id = p.last_bidding_member_id where p.last_bidding_member_id is not null and p.send_sms is null and p.deadline >= date_add(:time, interval -1 hour)",
-            countQuery = "select count(*) FROM product p where p.last_bidding_member_id is not null and p.send_sms is null and p.deadline >= date_add(:time, interval -1 hour)",
+            value = "select p.product_id as productId, p.name as productName, p.now_price as productPrice, m.phone as memberPhone from product p left join member m on m.member_id = p.last_bidding_member_id where p.deadline between date_add(:time, interval -1 hour) and :time and p.last_bidding_member_id is not null and p.send_sms is null",
+            countQuery = "select count(*) FROM product p where p.deadline between date_add(:time, interval -1 hour) and :time and p.last_bidding_member_id is not null and p.send_sms is null",
             nativeQuery = true
     )
     Page<SendSMSProjection> findSendSMSList(@Param("time") String time, Pageable pageable);
@@ -37,7 +37,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Transactional
     @Modifying
     @Query(
-            value = "update product p set p.send_sms=True where p.last_bidding_member_id is not null and p.send_sms is null and p.deadline >= date_add(:time, interval -1 hour)",
+            value = "update product p set p.send_sms=True where p.deadline between date_add(:time, interval -1 hour) and :time and p.last_bidding_member_id is not null and p.send_sms is null",
             nativeQuery = true
     )
     int updateSendSMS(@Param("time") String time);
