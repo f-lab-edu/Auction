@@ -11,6 +11,8 @@ import Auction.service.utils.ResultCode;
 import Auction.service.utils.S3Upload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -225,6 +227,14 @@ public class ProductService {
         Order order = OrderInfoDto.toEntity(member, product, price);
 
         orderRepository.save(order);
+    }
+
+    public Page<SendSMSProjection> getSendSMSList(String time, Pageable pageable) {
+        return productRepository.findSendSMSList(time, pageable);
+    }
+
+    public int updateSendSMS(String time) {
+        return productRepository.updateSendSMS(time);
     }
 
 }
