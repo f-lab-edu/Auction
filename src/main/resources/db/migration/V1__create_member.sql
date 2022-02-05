@@ -6,4 +6,4 @@ create table member (
                         phone varchar(11),
                         address varchar(255),
                         primary key (member_id)
-);
+) DEFAULT CHARSET=utf8;

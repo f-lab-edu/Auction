@@ -6,6 +6,8 @@ import Auction.service.aop.product.ProductDeleteCheck;
 import Auction.service.dto.*;
 import Auction.service.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -60,6 +62,16 @@ public class ProductController {
     public ResponseEntity<Result> order(@RequestBody @Valid OrderInfoDto orderInfoDto, BindingResult bindingResult) {
         productService.order(orderInfoDto);
         return Result.toResponseEntity(SUCCESS);
+    }
+
+    @GetMapping("/sendSMSList")
+    public ResponseEntity<Result> sendSMSList(String time, @PageableDefault(page = 0, size = 1000) Pageable pageable) {
+        return Result.toResponseEntity(SUCCESS, productService.getSendSMSList(time, pageable));
+    }
+
+    @PatchMapping("/sendSMS")
+    public ResponseEntity<Result> updateSendSMS(@RequestBody SendSMSDto sendSMSDto) {
+        return Result.toResponseEntity(SUCCESS, productService.updateSendSMS(sendSMSDto.getTime()));
     }
 
 }

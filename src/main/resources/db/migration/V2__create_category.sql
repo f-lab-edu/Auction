@@ -4,4 +4,4 @@ create table category (
                           mod_date datetime,
                           reg_date datetime default NOW(),
                           primary key (category_id)
-) engine=InnoDB;
+) engine=InnoDB DEFAULT CHARSET=utf8;

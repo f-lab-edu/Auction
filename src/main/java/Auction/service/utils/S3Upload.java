@@ -37,7 +37,8 @@ public class S3Upload {
             byte[] bytes = IOUtils.toByteArray(file.getInputStream());
             objMeta.setContentLength(bytes.length);
 
-            amazonS3Client.putObject(new PutObjectRequest(bucket, PRODUCT_FOLDER + fileName, file.getInputStream(), objMeta)
+            amazonS3Client.putObject(new PutObjectRequest(bucket,
+                    PRODUCT_FOLDER + fileName, file.getInputStream(), objMeta)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
             throw new CustomMessageException(INTERNAL_SERVER_ERROR, e.getMessage());
