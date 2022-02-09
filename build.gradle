@@ -41,7 +41,9 @@ dependencies {
 	testImplementation "org.testcontainers:testcontainers:1.16.2"
 	testImplementation "org.testcontainers:junit-jupiter:1.16.2"
 	testImplementation "org.testcontainers:mariadb:1.16.2"
-
+	testImplementation "org.testcontainers:localstack:1.15.3"
+	testImplementation 'commons-io:commons-io:2.4'
+	testImplementation 'commons-fileupload:commons-fileupload:1.4'
 }
 
 test {
