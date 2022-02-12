@@ -5,7 +5,7 @@ spring:
       max-request-size: 100MB
 
   datasource:
-    url: jdbc:mariadb://testdb.cjmijydzskth.us-east-2.rds.amazonaws.com:3306/${MYSQL_DATABASE:testdb}?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mariadb://db.cpzcl5ijog68.ap-northeast-2.rds.amazonaws.com:3306/${MYSQL_DATABASE:testdb}?serverTimezone=UTC&characterEncoding=UTF-8
     username: ${MYSQL_USER:test}
     password: ${MYSQL_PASSWORD:test1234}
     driver-class-name: org.mariadb.jdbc.Driver
@@ -35,7 +35,7 @@ spring:
 
   redis:
     port: 6379
-    host: localhost
+    host: redis.fmhkph.clustercfg.apn2.cache.amazonaws.com
 
 # JPA 쿼리 파라미터 확인
 logging:
