@@ -28,7 +28,7 @@
 
 # ✅ CI/CD
 
-<p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/1831e0dc-f21c-4d97-9f37-55eb0b6250f0/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220325%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220325T033331Z&X-Amz-Expires=86400&X-Amz-Signature=c35c00194911e60cbfcc9c4efd6f1de30c6c0e2f7e4aaaf3df408c7dadf4cb9a&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject" width="500" height="350"/></p>
+<p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/1831e0dc-f21c-4d97-9f37-55eb0b6250f0/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220406%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220406T103725Z&X-Amz-Expires=86400&X-Amz-Signature=07f9be5a65e17108f8d3e38e236bb5be0bbd28492bd39bb929c0c5d8e03860b7&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject" width="500" height="350"/></p>
 
 1. 코드 PR 후 develop 브랜치에 코드가 merge 되면 Webhook으로 Jenkins에 알린다.
 2. Jenkins는 SpringBoot를 테스트/빌드 후  jar 파일을 만든다. 
