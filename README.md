@@ -8,8 +8,8 @@
 
 # ✅ 서버 구성도
 
-<p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/76fcbfd6-9834-42b3-8b95-fab26adec8fb/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220325%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220325T032855Z&X-Amz-Expires=86400&X-Amz-Signature=442f7b648dca49633f49c0f0c91b5b193c72abeea9e9c2d49311822245b62119&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject" width="800" height="500"/></p>
-<p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/f1f23c89-b0f2-4256-a1b8-92e40997fee7/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220325%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220325T032908Z&X-Amz-Expires=86400&X-Amz-Signature=f7896da093b09e67a869db2e2c0e63f17ed0fcc141d703c9056b24e5fb47b279&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject" width="700" height="400"/></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/54263190/162751658-278cb52e-edfe-4ea0-a8a2-dcc54e2d93a8.png" width="800" height="500"/></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/54263190/162751892-863e2a04-68b7-4aae-8a3e-bcbbdeb66ad8.png" width="700" height="400"/></p>
 
 <br>
 
@@ -28,7 +28,7 @@
 
 # ✅ CI/CD
 
-<p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/1831e0dc-f21c-4d97-9f37-55eb0b6250f0/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220406%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220406T103725Z&X-Amz-Expires=86400&X-Amz-Signature=07f9be5a65e17108f8d3e38e236bb5be0bbd28492bd39bb929c0c5d8e03860b7&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject" width="500" height="350"/></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/54263190/162751937-b25881e7-b761-4d41-9b39-4af1cf091172.png" width="500" height="350"/></p>
 
 1. 코드 PR 후 develop 브랜치에 코드가 merge 되면 Webhook으로 Jenkins에 알린다.
 2. Jenkins는 SpringBoot를 테스트/빌드 후  jar 파일을 만든다. 
