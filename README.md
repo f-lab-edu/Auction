@@ -40,14 +40,13 @@
 
 # ✅ 주요 기능
 
-- RDBMS row Lock으로 동시성 문제를 해결한 입찰 시스템 
+- RDBMS를 이용한 입찰 시스템 
 - 실시간 경매 가격을 위한 SSE와 Redis Pub/Sub
 - 경매 결과 안내를 위해 Lambda에서 SMS 발송
 - Dockerfile을 이용한 이미지 생성
 - Jenkins를 이용한 CI/CD 자동화
 - AWS ECS 무중단 배포
 - 인증/인가를 위한 JWT
-- 반복되는 로직 분리를 위한 AOP
 
 <br>
 
@@ -59,4 +58,3 @@
 
 **📌  [실시간 경매 상품 가격 받기](https://www.notion.so/e6e7a3105f7440869daa1f4e35850355)**
 
-**📌**  [CI/CD 자동화와 무중단 배포](https://www.notion.so/CI-CD-c61f3f70bccf4348b78cd08a3b683602)
